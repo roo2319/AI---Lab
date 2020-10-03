@@ -4,6 +4,10 @@
 
 Hello! Welcome to Week 2 of Artificial Intelligence. Congratulations for making it through Week 1. This week, you will be introduced to the grid world, learn how to move around it and ultimately create a spiral.
 
+### Possible Queries 
+
+The following queries have been exported from the library code:
+
 ### How to run?
 
 This is one of the most important parts of the lab. In order to run the grid world, you need open `ailp.pl` using swipl. This week we are doing `lab grid` so we will pass that as a command line argument (e.g. `swipl ailp.pl lab grid`).
@@ -17,6 +21,9 @@ We will use a shell to initialise the grid so type in `shell.` and then `setup.`
 
 After the `setup/0` has finished, you can exit the shell using either `stop.`,`CTRL+D` or `CTRL+C` then (a)bort at the prompt.
 
+### Identifying your Agent
+
+At the top left of the grid, you will be able to see a coloured shape. This is your agent. For the first task in this lab, find a query that allows you to identify your agent and their current position.
 
 ### Create predicate `m/1`
 
@@ -26,10 +33,25 @@ The first step of moving around the grid world is defining the directions that w
 
 Next, We need to create a predicate that tells us if a position is on the board. Positions are stored as a compound term `p(X,Y)` where both X and Y range from 1 to the grid size inclusive.
 
+TIP: You can use the predicate `ailp_grid_size/1` to find the size of the grid.
+
 ### Create predicate `pos_step/3`
+
+For this step we need to find the new position after an agent has made a possible step (although we don't need to check the validity yet!).  
+
 ### Create predicate `new_pos/3`
+
+We are now able to combine the previous steps together to find the new position after a move has been made as well as to check that the move is valid. `new_pos(Pos,M,NPos)` should be true if moving from `Pos` in direction `M` will lead to `NPos` and `NPos` is on the board.
+
+### Create predicate `complete/1`
+
+The predicate `complete(L)` should be true if the Length of L is equal to the number of cells in the grid. The size of the grid **SHOULD NOT** be hardcoded.
+
 ### Create predicate `spiral/1`
 
+The final section of this lab is to implement the predicate `spiral(L)` which will move the agent from the start position `p(1,1)` towards the center of the grid in a spiral pattern. L should be the list of steps that are taken by the agent to reach the center **including** the start position (You can test this using `complete/1`) 
+
+TIP: In order for the agent to actually move, you will need to use `agent_do_moves(A,L)` where A is the identifier of your Agent and L is a path **that does not include** your current position.
 ## Lab 2: Identity Loss
 
 ### Create predicate `find_links_by_actor/2`
