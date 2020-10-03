@@ -124,7 +124,7 @@ get_assignment_details :-
                            use_module(assignment_library('oscar_library'), [part_module/1,shell/0,start/0,stop/0,
                                                                             my_agent/1,
                                                                             leave_game/0,join_game/1,start_game/0, ailp_grid_size/1,
-                                                                            reset_game/0,map_adjacent/3,map_distance/3,say/2
+                                                                            reset_game/0,say/2
                                                                                     ]
                                      ),
                            use_module(assignment_library('game_predicates'), [lookup_pos/2,get_agent_position/2,agent_do_moves/2]),
