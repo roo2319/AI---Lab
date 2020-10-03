@@ -8,6 +8,15 @@ Hello! Welcome to Week 2 of Artificial Intelligence. Congratulations for making 
 
 The following queries have been exported from the library code:
 
+| Query Name                  | Description                               |
+|-----------------------------|-------------------------------------------|
+| start                       | Initiate the web server                   |
+| shell                       | Open the command shell                    |
+| my_agent(-A)                | Returns the ID of your Agent              |
+| ailp_grid_size(-N)          | Returns the size of the grid              |
+| get_agent_position(+A,-Pos) | Returns the position of Agent A           |
+| agent_do_moves(+A,+L)       | Makes Agent A perform the list of moves L |
+
 ### How to run?
 
 This is one of the most important parts of the lab. In order to run the grid world, you need open `ailp.pl` using swipl. This week we are doing `lab grid` so we will pass that as a command line argument (e.g. `swipl ailp.pl lab grid`).
