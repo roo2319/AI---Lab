@@ -63,5 +63,18 @@ The final section of this lab is to implement the predicate `spiral(L)` which wi
 TIP: In order for the agent to actually move, you will need to use `agent_do_moves(A,L)` where A is the identifier of your Agent and L is a path **that does not include** your current position.
 ## Lab 2: Identity Loss
 
+For this weeks lab, we will be using a wikipedia API to uncover the identity of an actor based only on links from their wikipedia page. We will also be implementing a simple breadth first search. 
+
+### Possible Queries
+
+### How to run?
+
+Run using `swipl ./ailp.pl lab identity` 
+
+The file `lab_identity_12345.pl` will automatically be consulted and should be the place that your work is done. There is no need to follow the steps to start the webserver this week (although once you have created `find_identity/1` you can use `test/0` to check that your solution works).
+
 ### Create predicate `find_links_by_actor/2`
+
+
+
 ### Create predicate `find_identity/1`

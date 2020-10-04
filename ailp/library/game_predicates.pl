@@ -45,17 +45,13 @@
 % There is ALWAYS 1 non playable player, which is used to send some commands
 % so X = 11 implies that only 10 real players can join
 max_players(X) :-
-  ( part_module(3)    -> X = 11
-  ; part_module(test) -> X = 11 
-  ; otherwise         -> X = 2
-  ).
+  X = 2.
+
 
 internal_grid_size(X) :- 
   ( part_module(0) -> X = 10
-  ; part_module(3) -> X = 31 % This must be odd or the maze will fail to generate
   ; otherwise      -> X = 20).  
 
-% Exported predicate for use in part5
 ailp_grid_size(X) :- internal_grid_size(X).
 
 get_num(oracle, X) :-
@@ -121,8 +117,6 @@ drawable_agent(A , DrawableA) :-
   Cpath = C,
   assert(ailp_internal(agent_colour_path(A, Cpath))),
   ( part_module(0) -> X=1, Y=1
-  ; part_module(1) -> X=1, Y=1
-  ; part_module(3) -> (maze_free_pos(p(X,Y)),internal_reveal_grid(p(X,Y),1))
   ; part_module(100) -> X=1, Y=1
   ; otherwise      -> random_free_pos(p(X,Y))
   ),
@@ -159,9 +153,7 @@ ailp_reset :-
   get_num(oracle, NO),
   init_things(oracle,NO),
   get_num(thing, NT),
-  init_things(thing,NT), 
-  (part_module(3) -> make_maze
-  ;otherwise      -> true),
+  init_things(thing,NT),
   wp:init_identity,  % defined in wp.pl
   maplist( drawable_agent, Agents, DrawableAgents),
   append( DrawableAgents, [[dyna, 0,red, 1,1]], AllAgents), % adds a dummy agent to use in do_command predicate
@@ -187,34 +179,12 @@ internal_lookup_pos(Pos, OID) :-
   ground(Pos),
   ( internal_off_board(Pos)                               -> fail
   ; bagof( A, ailp_internal(agent_position(A, Pos)), _As) -> OID = agent
-  ; (part_module(3) -> seen_object(O,Pos,_)
-    ;otherwise      -> internal_object(O,Pos,_))              -> OID = O
+  ; internal_object(O,Pos,_)              -> OID = O
   ; otherwise                                             -> OID = empty
   ).
 
 lookup_pos(Pos,OID) :- 
   query_world(internal_lookup_pos,[Pos,OID]).
-
-% Reveals cells that are <= Dist away from Pos, batches colour commands simultaneously
-% internal_reveal_grid(+Pos,+Dist)
-internal_reveal_grid(Pos,Dist) :-
-  internal_reveal_grid(Pos,Dist,C),
-  do_commands(C).
-internal_reveal_grid(Pos,Dist,CommandQueue) :-
-  internal_adj_range(Pos,Dist,Cells),
-  findall(Command,
-         (member(P,Cells),internal_reveal_cell(P,Command), Command \= [])
-         ,CommandQueue).
-
-% This should not be called directly, only through internal reveal grid
-% Command = [] if Pos has already been revealed
-internal_reveal_cell(Pos,Command) :-
-  Pos = p(X,Y),
-  (retract(ailp_seen(unknown(_,Pos))) -> 
-      (ailp_internal(thing(I,Pos)) -> (assert(ailp_seen(thing(I,Pos))),Command=[dyna,colour,X,Y,black])
-      ;otherwise                   -> (Command=[dyna,colour,X,Y,green]))
-  ;otherwise                            -> Command=[]).
-
 
 % map_adjacent(+Pos, ?AdjPos, ?Occ)
 % Occ = empty / agent / c(X) / o(X)  - charging station / oracle and ids
@@ -228,14 +198,6 @@ map_adjacent(Pos, AdjPos, OID) :-
 map_distance(p(X,Y),p(X1,Y1), D) :-
   D is abs(X - X1) + abs(Y - Y1).
 
-% Places agent at either p(1,1) or next to another agent
-maze_free_pos(P) :-
-  (ailp_internal(agent_position(_,Pos)),
-  map_adj(Pos,PPos,_),
-  (check_pos(PPos, empty) -> (P = PPos,!)
-  ;otherwise              -> fail));
-  (P = p(1,1),!).
-
 random_free_pos(P) :-
   internal_grid_size(N),
   random(1,N,X),
@@ -248,18 +210,6 @@ map_adj(Pos, AdjPos, OID) :-
   nonvar(Pos),
   internal_poss_step(Pos, _M, AdjPos, 1),
   check_pos(AdjPos, OID).
-
-% Discover the cells up to N units away from Pos
-internal_adj_range(Pos,0,[Pos]).
-internal_adj_range(Pos,N,Range) :-
-  N > 0,
-  N1 is N-1,
-  findall(Children,
-         (map_adj(Pos,NPos,_),(internal_adj_range(NPos,N1,Children))),
-         TRange),
-  foldl(append,TRange,[],LRange),
-  append(LRange,[Pos],LLRange),
-  list_to_set(LLRange,Range).
 
 %%%%%%%%%% Agent predicates %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % agent_current_energy(+Agent, -Energy)
@@ -364,10 +314,8 @@ agent_do_move(Agent,To,Commands) :-
   Obj = empty,!,
   %% send move to server
   p(X,Y) = To,
-  (part_module(3) -> internal_reveal_grid(To,1,RevealCommands)
-  ;otherwise      -> RevealCommands = []),
-  agent_colour_path(Agent, Cpath),
-  Commands = [[Agent, move, X, Y],[Agent, colour, X, Y, Cpath]|RevealCommands],
+  agent_colour_path(Agent,Cpath),
+  Commands = [[Agent, move, X, Y],[Agent, colour, X, Y, Cpath]],
   %% move was successful so decrease agent energy
   internal_use_energy(Agent,1),
   retract(ailp_internal(agent_position(Agent, _))),
