@@ -67,6 +67,17 @@ For this weeks lab, we will be using a wikipedia API to uncover the identity of 
 
 ### Possible Queries
 
+The following queries have been exported from the library code:
+
+| Predicate				   						| Meaning                                                               				|
+|-----------------------------------------------|---------------------------------------------------------------------------------------|
+| `actor(-Actor)`								| return each possible secret random actor identity  (e.g. `'Billy Bob Thornton'`)		|
+| `wp(+Title,-WikiText)`					| connect to Wikipedia page with given Title and return its WikiText    				|
+| `wp(+Title)`								| connect to Wikipedia page with given Title  and print its WikiText 					|
+| `wt_link(+WikiText, -Link)`				| return any Link contained in the given WikiText										|
+| `agent_ask_oracle(+A, +Orac,+Qu,-Ans)`| This is used to question the oracle. If the Agent's Question is `link` then the Oracle's Answer will be a random link from the Wikipedia page whose title is the (name of the) secret random actor identity |
+| `test`										| test if `find_identity/1` successfully returns correct identity in all possible cases	|
+
 ### How to run?
 
 Run using `swipl ./ailp.pl lab identity` 
