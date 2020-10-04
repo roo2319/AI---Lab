@@ -50,6 +50,7 @@ max_players(X) :-
 
 internal_grid_size(X) :- 
   ( part_module(0) -> X = 10
+  ; part_module(101) -> X = 10
   ; otherwise      -> X = 20).  
 
 ailp_grid_size(X) :- internal_grid_size(X).
@@ -57,20 +58,16 @@ ailp_grid_size(X) :- internal_grid_size(X).
 get_num(oracle, X) :-
   internal_grid_size(N),
   ( part_module(0)    -> X = 0
-  ; part_module(1)    -> X = 1
-  ; part_module(2)    -> X = 10
-  ; part_module(3)    -> X = 0
   ; part_module(100)  -> X = 1
+  ; part_module(101)  -> X = 1
   ; part_module(test) -> X = N/2
   ; otherwise -> fail
   ).
 get_num(charging_station, X) :-
   internal_grid_size(N),
   ( part_module(0)    -> X = 0
-  ; part_module(1)    -> X = 4
-  ; part_module(2)    -> X = 2
-  ; part_module(3)    -> X = 0
   ; part_module(100)    -> X = 4
+  ; part_module(101)    -> X = 0
   ; part_module(test) -> X = N/10
   ; otherwise -> fail
   ).
@@ -78,10 +75,8 @@ get_num(charging_station, X) :-
 get_num(thing, X) :-
   internal_grid_size(N),
   ( part_module(0)    -> X = 0
-  ; part_module(1)    -> X = 80
-  ; part_module(2)    -> random(85, 101, X)
-  ; part_module(3)    -> X = 0  % Part 3 uses an alternative method to place walls
   ; part_module(100)    -> X = 80
+  ; part_module(101)    -> X = 25
   ; part_module(test) -> X = N*N/4
   ; otherwise -> fail
   ).
@@ -191,7 +186,7 @@ lookup_pos(Pos,OID) :-
 map_adjacent(Pos, AdjPos, OID) :-
   nonvar(Pos),
   internal_poss_step(Pos, _M, AdjPos, 1),
-  query_world( lookup_pos, [AdjPos, OID]).
+  query_world( internal_lookup_pos, [AdjPos, OID]).
 
 % map_distance(+Pos1, +Pos2, ?Distance)
 % Manhattan distance between two grid squares
@@ -324,6 +319,7 @@ agent_do_move(Agent,To,Commands) :-
 %%%%%%%%%% Internal predicates %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 internal_topup(Emax) :-
   (part_module(0) -> Emax is 999999
+  ;part_module(101) -> Emax is 999999
   ;otherwise      -> (internal_grid_size(N),Emax is ceiling(N*N/4))
   ).
   

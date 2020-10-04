@@ -86,6 +86,46 @@ The file `lab_identity_12345.pl` will automatically be consulted and should be t
 
 ### Create predicate `find_links_by_actor/2`
 
+We will start by creating a predicate to find all the links on a given actors wikipedia page. This predicate will take the form of `find_links_by_actor(-Actor,+Links)`
 
 
 ### Create predicate `find_identity/1`
+
+For the next stage, we need to implement `find_identity(+Actor)` to discover the secret actor (which is randomly chosen each time the program is run). `find_identity/2` will use `agent_ask_oracle(oscar,o(1),link,L)` to gain a link `L` that belongs to the secret actor. This link can be used to eliminate certain actors until eventually there is only one possible actor left. Make sure that `find_identity/1` is deterministic (it only returns one answer)!
+
+TIP - The use of `findall/3`, `bagof/3` or `include/3` is reccomended.
+
+## Lab 3: Breadth first search
+
+For the final prolog lab, you will need to implement a breadth first search in order to find an oracle (shown as a red square). A breadth first search is a slow algorithm but will always find the shortest path. This lab may be tough, but assuming you have kept up with the other labs, then you will be able to do it! (there is also plenty of support on offer from TA's)
+
+### Possible Queries
+
+Map adjacent
+Get agent position
+etc
+
+### How to run
+
+Run using `swipl ./ailp.pl lab search`. The file `lab_search_12345.pl` will automatically be consulted and should be the place that your work is done. 
+
+This time you will need to follow the steps from Lab 1 to run the webserver (`start.`, click run on the website, `shell.`, `setup.`). You can use `search.` while in the shell as a shortcut for `search_bf` outside of the shell.
+
+### Exploring `map_adjacent/3`
+
+After you have loaded the lab you will notice that you are now in a more complicated version of the world from Lab 1. The world is randomly generated at runtime but will have at most 25 Walls (in black) and exactly 1 oracle (in red). 
+
+The query `map_adjacent(+Pos,?AdjPos,?OID)` must receive a position although it is optional whether or not to give an AdjPos/OID. OID will always be a member of `[agent, empty, t(X),o(X)]`.
+
+For this section, try to write queries that:
+    
+    1. Find all the adjacent cells around position P (giving multiple solutions)
+    2. Find all the adjacent cells around position P
+    (as a List) 
+    3. Find **ONLY** the empty cells around position P
+    4. Find the empty cells next to your agent
+    5. Find the OID of the oracle
+
+NOTE: These queries don't need to work generally, it is enough that they only work in your current version of the grid (i.e, it is ok to instantiate things like P)
+
+### Create predicate `complete/1`

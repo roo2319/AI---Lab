@@ -154,6 +154,7 @@ shell2query(reset,(reset_game,start_game),ok).
 shell2query(status,query_world(game_status,[S]),game_status(S)).
 shell2query(whoami,my_agent(A),my_agent(A)).
 shell2query(position,(my_agent(Agent),get_agent_position(Agent,P)),both(current_position(P))).
+shell2query(search,search_bf,ok).
 shell2query(ask(S,Q),(my_agent(Agent),agent_ask_oracle(Agent,S,Q,A)),A).
 shell2query(call(G),findall(G,call(G),L),L).
 
