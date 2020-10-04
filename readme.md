@@ -119,15 +119,24 @@ The query `map_adjacent(+Pos,?AdjPos,?OID)` must receive a position although it 
 
 For this section, try to write queries that:
     
-    1. Find all the adjacent cells around position P (giving multiple solutions)
-    2. Find all the adjacent cells around position P
-    (as a List) 
-    3. Find **ONLY** the empty cells around position P
-    4. Find the empty cells next to your agent
-    5. Find the OID of the oracle
+1. Find all the adjacent cells around position P (giving multiple solutions)
+2. Find all the adjacent cells around position P
+(as a List) 
+3. Find **ONLY** the empty cells around position P
+4. Find the empty cells next to your agent
+5. Find the OID of the oracle
 
 NOTE: These queries don't need to work generally, it is enough that they only work in your current version of the grid (i.e, it is ok to instantiate things like P)
 
 ### Create predicate `complete/1`
 
-As the goal of the task is to move next to an oracle, the predicate complete(+Pos) must be defined in order to know when the task is done. 
+As the goal of the task is to move next to an oracle, the predicate complete(+Pos) must be defined in order to know when the task is done. This predicate should be true if the position is adjacent to an oracle
+
+### Create the predicate `search_bf/0`
+
+You need to implement `search_bf/0` as well as any other supporting predicates that you want to use. `search_bf.` should use a breadth first search to navigate the agent to the oracle. This is a more complex task than previous but these tips should help guide you:  
+
+- You may want to find the path to the oracle and then make all the moves at once using `agent_do_moves/2`.
+- Keeping track of which cells have already been visited will make sure that you don't check cells multiple times.
+- Test often, And use `trace/0` if you aren't sure why something isn't working.
+- Don't be afraid to ask for help!
