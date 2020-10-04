@@ -129,3 +129,5 @@ For this section, try to write queries that:
 NOTE: These queries don't need to work generally, it is enough that they only work in your current version of the grid (i.e, it is ok to instantiate things like P)
 
 ### Create predicate `complete/1`
+
+As the goal of the task is to move next to an oracle, the predicate complete(+Pos) must be defined in order to know when the task is done. 
