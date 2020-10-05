@@ -108,9 +108,18 @@ For the final prolog exercise, you will need to implement a breadth first search
 
 ### Possible Queries
 
-Map adjacent
-Get agent position
-etc
+The exported queries for this exercise are the same as exercise 1, except map_adjacent is now also exported. See below for list:
+
+| Query Name                      | Description                                     |
+|---------------------------------|-------------------------------------------------|
+| start                           | Initiate the web server                         |
+| shell                           | Open the command shell                          |
+| my_agent(-A)                    | Returns the ID of your Agent                    |
+| ailp_grid_size(-N)              | Returns the size of the grid                    |
+| get_agent_position(+A,-Pos)     | Returns the position of Agent A                 |
+| agent_do_moves(+A,+L)           | Makes Agent A perform the list of moves L       |
+| **map_adjacent(+Pos,?AdjPos,?OID)** | **Returns positions adjacent to Pos and their OID** |
+
 
 ### How to run
 
