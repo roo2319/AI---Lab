@@ -1,4 +1,4 @@
-# Grid world Lab 1
+# Grid world Lab 2
 ## Exercise 2: Identity Loss - Part 2
 
 This is a direct continuation from last weeks lab sheet, and will focus on actually finding the identity of the actor, now that we have gathered all the links.
